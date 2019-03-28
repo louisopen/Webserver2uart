@@ -1,3 +1,10 @@
+"""
+python3 simple_webserver.py   #Run command to handle multiple GET request in the HW platform.
+example:
+http://192.168.0.114:8000/       # Display the webpage without LED status
+http://192.168.0.114:8000/on     # Turn on the LED and display LED is On
+http://192.168.0.114:8000/off    # Turn off the LED and display LED is off
+"""
 import RPi.GPIO as GPIO
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
