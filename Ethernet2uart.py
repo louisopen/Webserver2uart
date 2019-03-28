@@ -51,7 +51,7 @@ def run(svr_status):
 
             except:
 
-                print "fail to connect serial"
+                print "fail to open serial port."
                 ser.close()
                 ser=None
 
