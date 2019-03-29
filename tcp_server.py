@@ -5,8 +5,8 @@ import sys
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to the address given on the command line
-#server_name = sys.argv[1]
-server_name = 127.0.0.1
+server_name = sys.argv[1]
+#server_name = 127.0.0.1
 server_address = (server_name, 10000)  #server_address = ('localhost', 10000)
 print >>sys.stderr, 'starting up on %s port %s' % server_address
 sock.bind(server_address)
