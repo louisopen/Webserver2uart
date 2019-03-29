@@ -1,21 +1,16 @@
 """
-python3 simple_webserver.py   #Run command to handle multiple GET request in the HW platform.
+python3 simple_webserver.py      # Run command to handle multiple GET request in the HW platform.
 example:
 http://192.168.0.114:8000/       # Display the webpage without LED status
 http://192.168.0.114:8000/on     # Turn on the LED and display LED is On
 http://192.168.0.114:8000/off    # Turn off the LED and display LED is off
 """
-import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO          # Check it in your windows or Raspbian platform
 import os
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, HTTPServer      # must be run python3 -m http.server   
 
 
-#host_name = '192.168.0.114'    # Change this to your Raspberry Pi IP address
-host_name = 'localhost'
-host_port = 8000
-
-
-class MyServer(BaseHTTPRequestHandler):
+class MytestHTTPServer(BaseHTTPRequestHandler):
     """ A special implementation of BaseHTTPRequestHander for reading data from
         and control GPIO of a Raspberry Pi
     """
@@ -73,4 +68,18 @@ class MyServer(BaseHTTPRequestHandler):
         else:
             GPIO.output(18, GPIO.LOW)
         print("LED is {}".format(post_data))
-        self._redirect('/')    # Redirect back to the root url
+        self._redirect('/')      # Redirect back to the root url
+
+def run():
+    #host_name = '10.132.10.25'   # your Raspberry Pi IP address
+    host_name = ''
+    #host_name = 'localhost'      # Not working now
+    host_port = 8000             # print('starting server, port', host_port)
+    # Server settings
+    server_address = (host_name, host_port) 
+    print('running server...', server_address)
+    httpd = HTTPServer(server_address, MytestHTTPServer)
+    httpd.serve_forever()
+
+if __name__ == '__main__': 
+    run()
