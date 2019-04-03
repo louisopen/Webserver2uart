@@ -22,4 +22,4 @@ while True:
     vals = "{\"date\":\""+date+"\",\"temperature\":"+str(temp)+",\"h\":"+str(humidity)+"}"
     time.sleep(1);
     ws.send(vals);
-    print vals
+    print vals;
