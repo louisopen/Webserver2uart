@@ -1,7 +1,7 @@
 ## Ethernet2uart
-try Ethernet to uart communication with Python on Raspberry Pi platform.
+Try Ethernet to uart communication with Python base on Raspberry Pi platform.
 
-UART with EN_485
+Ethernet to UART converter (UART with EN_485)
 
 tcp server
 
@@ -11,4 +11,4 @@ udp server
 
 udp client
 
-simple web for setting.
+simple websocket for gateway setting.
