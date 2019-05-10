@@ -1,0 +1,10 @@
+ModbusServer = www.electronicwings.com
+ModbusPort = 9970
+userKey = your_userkey_in_Azure
+ser=None
+serial_port=/dev/ttyUSB0
+serial_port = 8   
+serial_port=0  
+serial_timeout=1
+serial_baud = 9600
+serial_EN_485 =  4

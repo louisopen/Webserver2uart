@@ -1,7 +1,10 @@
 ## Ethernet2uart
-Try Ethernet to uart communication with Python base on Raspberry Pi platform.
+Subject: RS-485 via UART interface to Ethernet on Python
+Try the master data go with Socket to UART, then UART data go back to Socket(Master) base on Raspberry Pi platform.
 
-Ethernet to UART converter (UART with EN_485)
+The gateway(Ethernet to UART converter) setting used simple http server.
+
+The gateway UART with EN_485 GPIO control)
 
 tcp server
 
@@ -11,4 +14,4 @@ udp server
 
 udp client
 
-simple websocket for gateway setting.
+serial port control
