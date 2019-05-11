@@ -8,7 +8,7 @@ Aauther: louisopen@gmail.com
 www: louisopen.github.io
 """
 import sys
-#import serial
+import serial
 import socket
 import time
 #import RPi.GPIO as GPIO
