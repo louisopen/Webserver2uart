@@ -11,7 +11,7 @@ import sys
 import serial
 import socket
 import time
-#import RPi.GPIO as GPIO    #Raspberry pi GPIO
+#import RPI.GPIO as GPIO    #Raspberry pi GPIO
 from random import *
 
 sys.stderr = open("logstderr.txt", "w")     #turn to file log
