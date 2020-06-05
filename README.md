@@ -1,17 +1,7 @@
-## Ethernet2uart
-Subject: RS-485 via UART interface to Ethernet on Python
-Try the master data go with Socket to UART, then UART data go back to Socket(Master) base on Raspberry Pi platform.
+## Ethernet2uart Gateway (Web 2 UART)
+Subject: Web request to uart of RPi
 
-The gateway(Ethernet to UART converter) setting used simple http server.
-
-The gateway UART with EN_485 GPIO control)
-
-tcp server
-
-tcp client
-
-udp server
-
-udp client
-
-serial port control
+The gateway(Ethernet to UART converter) setting used Flask Web server.
+You can command on Browser: 
+http://raspberrypi_ip:5000/model
+http://raspberrypi_ip:5000/version

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">
+                    <img style="max-width:30px;margin-top:-6px;" class="logo" src="{{ url_for('static',filename='images/cglogo.jpg') }}">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">                    
+                    <li class="active">
+                        <a href="#">My First Web
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">Q&A</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Key Words">
+                    </div>
+                    <button type="submit" class="btn btn-default">Search</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.id %}
+                        <li>
+                            <!-- 登入後才可見到的導覽列 -->
+                            <a href="{{url_for('logout')}}">Logout: {{ current_user.id }}</a>
+                            <!-- <a class="nav-link" href="/logout">登出</a> -->
+                        </li>
+                    {% else %}
+                        <li>
+                            <!-- 沒有登入見到的導覽列 -->
+                            <a href="{{url_for('login')}}">Login</a>
+                            <!-- <a class="nav-link" href="/login">登入</a> -->
+                        </li>
+                        <li>
+                                <a href="#">Register</a>
+                        </li>
+                    {% endif %}                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Friend
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="mailto:louisopen@gmail.com">Contact me</a>
+                                <!-- <a href="mailto:louisopen@gmail.com">聯繫我</a> -->
+                            </li>
+                            <li>
+                                <a href="http://flask.pocoo.org" target="_blank">Flask Website</a>
+                                <!-- <a href="http://flask.pocoo.org" target="_blank">Flask Website</a> -->
+                            </li>
+                            <li>
+                                <a href="https://www.python.org/">Python Website</a>
+                                <!-- <a href="https://www.python.org/">Python Website</a> -->
+                            </li>
+                            <li role="separator" class="divider"></li>                          
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="https://www.google.com.hk" target="_blank">Google Search</a>
+                                <!-- <a href="https://www.google.com.hk" target="_blank">Google Search</a> -->
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    <div>{% block content %}{% endblock %}</div>
+
+    <!-- Louis want to try this -->
+    <div class="body-container">
+        {% block body_part %}
+        {% endblock %}
+    </div>
+    
+    <div class="flash-message">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+
+
+</body>
+</html>

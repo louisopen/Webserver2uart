@@ -1,2 +1,0 @@
-Start the Python
-total lines is ['ModbusServer = www.electronicwings.com\n', 'ModbusPort = 9970\n', 'userKey = your_userkey_in_Azure\n', 'ser=None\n', 'serial_port=/dev/ttyUSB0\n', 'serial_port = 8   \n', 'serial_port=0  \n', 'serial_timeout=1\n', 'serial_baud = 9600\n', 'serial_EN_485 =  4']
