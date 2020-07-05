@@ -43,10 +43,6 @@ class SerialTask:
 		#	return True
 		#return False
 	def isOpen(self):
-		#if not self.serial_port.isOpen():
-		#	if self.serial_port.open():
-		#		return True
-		#return False
 		if self._running:
 			return True
 		return False
@@ -80,51 +76,8 @@ class SerialTask:
 		temp=self.rec_string
 		self.rec_string=''
 		return temp
-	def function_status(self):
-		comm=':func?\r'
-		self.serial_port.write(comm.encode('utf-8'))
-		#self.getData=bytes.decode(self.serial_port.read(256))	#get function string
-		#time.sleep(0.3)
-		self.getData=self.receive()	#get function string
-		return self.getData
-	def function_read(self):		
-		comm=':fetch?\r'
-		self.serial_port.write(comm.encode('utf-8'))
-		#self.serial_port.flushInput()
-		temp=0
-		try:
-			#cmds=bytes.decode(self.serial_port.read(256)).split()
-			cmds=self.receive().split()
-			#print '\r%s %s'%(len(cmds), cmds)		#debug
-			temp=float(cmds[1])
-		except:
-			pass
-		#time.sleep(0.4)
-		return temp
-	def current_dc_range(self,range):
-		comm=':func curr:dc ;:curr:dc:rang '+range+'\r'	#-20~20
-		self.serial_port.write(comm.encode('utf-8'))
-		time.sleep(0.4)
-		return self.function_status()
-	def voltage_dc_range(self,range):
-		comm=':func volt:dc ;:volt:dc:rang '+range+'\r'	#-0.2~1000
-		self.serial_port.write(comm.encode('utf-8'))
-		time.sleep(0.4)
-		return self.function_status()
-	def frequency_range(self,range):
-		comm=':func freq ;:freq:thr:volt:rang '+range+' ;:freq:ref 100000\r'	#volt(0~1010)  ref(2000000)
-		self.serial_port.write(comm.encode('utf-8'))
-		#self.serial_port.flushInput()
-		#self.serial_port.flushOutput()
-		time.sleep(0.8)
-		return self.function_status()
-	def resistance_range(self,range):
-		comm=':func res ;:res:rang '+range+'\r'	#nplc(0.1~10) rang(0~20000000)
-		#comm=':func res ;:res:nplc 1 ;:res:rang '+range+'\r'	#nplc(0.1~10) rang(0~20000000)
-		self.serial_port.write(comm.encode('utf-8'))
-		#self.serial_port.flushInput()
-		time.sleep(0.8)
-		return self.function_status()
+
+
 	def run(self,message):
 		#self.serial_port.write('\r\nStart '+ Model +' Serial\r\nshell>'.encode('utf-8'))
 		self.serial_port.flushInput()
@@ -136,12 +89,12 @@ class SerialTask:
 					#print '\r\nTime: %s'%datetime.datetime.now().strftime('%H:%M:%S')
 					self.debounce += 1
 					if self.debounce > 2:		#2 sec. if timebase is 0.125
-						#print '\r\nClear: %s'%self.getData
+						#print '\r\nFlush buffer: %s\r\n'%self.getData.encode('hex')
+						self.serial_port.flushInput()
 						self.getData=''
 						self.debounce=0
 					pass
-				elif ch == '\n':	##############Normally for 0D0A##################
-				#elif ch == '\x0a':	##############Special for 5491B##################
+				elif ch == '\n':	##############Normally for 0A##################
 					if self.getData !='':
 						#process_receive(self.getData)		#here for app_ipad & normal devices
 						self.rec_string=self.getData		#or here for app_ipad & normal devices
@@ -160,37 +113,40 @@ class SerialTask:
 					self.getData += bytes.decode(ch)
 					self.debounce=0
 					#print '\r\nString: %s'%self.getData	#DEBUG
-					time.sleep(0.005)
+					time.sleep(0.005)	#fast
 					continue
 			except Exception, e:
-				print '\r\nSerial port: %s\r\nshell>'% str(e)
+				print '\r\nSerial exception: %s\r\n'% str(e)
+				self.serial_port.flushInput()
 				self.getData=''
 				pass
 			time.sleep(0.125)
 		#GPIO.output(LED[1],GPIO.LOW)
 #===========================================================================
 def process_receive(getData):	#for Master
-	#cmds=[for x in input().split()]
-	#cmds=[getData.split()]	
-	#cmds=[getData.split('',2)]
-	#cmds=getData.split()
-	cmds=getData.split(':')
-	print '\r\nCommand: %s %s'%(len(cmds), cmds)	#Change 20200413
 	try:
+		#cmds=[for x in input().split()]
+		#cmds=[getData.split()]	
+		#cmds=[getData.split('',2)]
+		#cmds=getData.split()
+		cmds=getData.split(':')
+		print '\r\nCommand: %s %s'%(len(cmds), cmds)	#Change 20200413
+		logmsg='\r\nCommand fail: '+cmds[0]+'\r\nshell>'	#20200610 Changed 預入載, 當錯誤逃離時
 		#watchdog = Watchdog(4, restart_program)  	#使用自己的Handler(),否則就使用類庫內定義handler
 		if cmds[0]=='volt':
-			#logmsg=cmds[1]
+			logmsg='\r\n'+cmds[0]+'\r\nshell>'
 			pass
 		elif cmds[0]=='curr':
-			#logmsg=cmds[1]
+			logmsg='\r\n'+cmds[0]+'\r\nshell>'
 			pass
 		else:
-			print '\r\nCommand: %s'%cmds[0]
+			logmsg='\r\n'+cmds[0]+'\r\nshell>'
 			pass
 	except:
+		logmsg='\r\nCommand fail: '+cmds[0]+'\r\nshell>'	#20200610 Changed 預入載, 當錯誤逃離時
 		pass
 	#watchdog.stop()
-	return cmds
+	return logmsg
 """	return {
 	'a': 1,
 		print '1'
