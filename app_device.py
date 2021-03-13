@@ -2,10 +2,11 @@
 #coding= utf-8
 
 from ConsoleThreading import *
-from flask import Flask, render_template, Response, request, redirect
+from flask import Flask, render_template, Response, request, redirect, json, jsonify, abort
 
-Model='Web2uart Control'
 app = Flask(__name__)
+Model='Web2uart Control'
+nameing = [{"id": 1, "name": "CHIPS", "done": False}, {"id": 2, "name": "garden", "done": False}]  #json
 
 def CheckSerial():
     #Serial = SerialTask('/dev/ttyAMA0',115200)	#test Slave of the PC station control
@@ -39,3 +40,45 @@ def version():
     Serial.terminate()
     lines=lines.replace('\n','</br></br>')  #to text/html
     return Response(lines, mimetype='text/html')
+
+@app.route('/getjson', methods = ['GET'])
+def get_json():
+    return json.dumps(nameing)
+    #return jsonify(nameing)            #異曲同工
+
+@app.route('/setjson/<int:id>', methods=['GET'])
+def set_json(id=1):
+    task = filter(lambda t: t['id'] == id, nameing)
+    if len(task) == 0:
+        abort(404)
+    return jsonify(task[0])             #符合之項目
+    #return jsonify({'task': task[0]})  #符合之項目之數組
+    #return json.dumps({'id':id})
+
+@app.route('/postset/<int:id>/<name>', methods = ['POST','GET'])   #GET for debug
+def post_set(id,name):
+    task = {
+        "id": nameing[-1]['id'] + 1,
+        "name": name,
+        "done": False
+    }
+    nameing.append(task)
+    #return jsonify(nameing)
+    return jsonify({'nameing': nameing})
+
+@app.route('/postjson', methods = ['POST','GET'])   #GET for debug
+def post_json(name='L'):
+    if not request.json:    #have josn body
+        abort(400)
+    task = {
+        "id": nameing[-1]['id'] + 1,
+        "name": request.json['name'],   #根據Client request {"name": "xxxx"}
+        "done": False
+    }
+    nameing.append(task)
+    return jsonify(nameing)    
+    #[{"id":1,"name":"CHIPS"},{"id":2,"name":"garden"},{"id":3,"name":"L"}]
+
+    #return jsonify({'nameing': nameing})    
+    #{"nameing":[{"id":1,"name":"CHIPS"},{"id":2,"name":"garden"},{"id":3,"name":"L"}]}
+

@@ -1,7 +1,9 @@
-### Web Server to uart Gateway 
-#### Subject: Web request to control uart on Raspberry Pi
+## Web Server for Uart Gateway 
+#### Web request to uart & response from uart 
 
 The gateway(Ethernet to UART converter) setting used Flask Web server.
+
+Web RESTful url for test of client
 
 You can command on Browser: 
 
